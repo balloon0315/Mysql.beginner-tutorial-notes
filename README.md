@@ -1,4 +1,4 @@
-# sql.beginner-tutorial-notes :muscle:
+# Mysql.beginner-tutorial-notes :muscle:
 
 ## The notes contains:  
 SELECT, WHERE\
