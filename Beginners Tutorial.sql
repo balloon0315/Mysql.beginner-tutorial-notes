@@ -5,7 +5,7 @@ WHERE (OR AND IN LIKE % )
 REGEXP  regular expression
 NULL
 INNER/OUTER JOIN (self multiple across)
-
+INSERT/UPDATE/DELETE
 */ 
 
 USE  sql_store;
@@ -14,7 +14,7 @@ SELECT *
 FROM customers
 -- WHERE customer_id = 1
 ORDER BY state, first_name;
-	-- DESC; ASC (default)
+    -- DESC; ASC (default)
     -- ORDER BY 1,2  :order by COL1 COL2  (the column you selected 1,2)
 
 SELECT 
@@ -22,7 +22,7 @@ SELECT
     last_name,
     points,
     (points + 10) * 100 AS discount_factor   
-		                -- "discount factor"
+		        -- "discount factor"
 FROM customers
 -- LIMIT 3 ;
 LIMIT 6, 3; 
@@ -42,7 +42,7 @@ FROM products;
 -- WHERE state = "VA" OR "GA" 
 -- WHERE state NOT IN ("VA","FL") 
 -- WHERE phont IS NULL
-			-- IS NOT NULL
+	    -- IS NOT NULL
 
 -- WHERE birth_date > "1990-01-01" OR points>1000 AND state= "VA"; 
 	-- AND : evaluate first!
@@ -72,7 +72,7 @@ FROM orders o
 JOIN customers c  
 	ON o.customer_id = c.customer_id;
 	-- orders o : alias; once used, all places should use it.  
-    -- : attention these columns in different table but with same column names.
+        -- : attention these columns in different table but with same column names.
 	-- INNER JOIN : only return records match this condition
 
 SELECT 
@@ -84,7 +84,7 @@ FROM customers c
 RIGHT JOIN orders o
 	ON c.customer_id = o.customer_id
 ORDER BY c.customer_id;
-    -- : order_id with NULL value not return. 
+        -- : order_id with NULL value not return. 
 	-- : result same as inner join. cuz order by Right table orders 
 */ 
 FROM orders o
@@ -107,7 +107,7 @@ JOIN sql_inventory.products p
 USE sql_hr;
 
 SELECT 
-	e.employee_id,
+    e.employee_id,
     e.first_name,
     m.first_name AS manager
 FROM employees e
@@ -119,7 +119,7 @@ JOIN employees m
 USE sql_store;
 
 SELECT 
-	o.order_id,
+    o.order_id,
     o.order_date,
     c.first_name,
     c.last_name,
@@ -154,10 +154,10 @@ WHERE o.customer_id = c.customer_id;
 
 	   -- \\\   outer joins between multiple tables   \\\
 SELECT 
-	o.order_id,
+    o.order_id,
     o.order_date,
     c.customer_id,
-	c.first_name AS customer,
+    c.first_name AS customer,
     sh.name AS shipper,
     os.name AS status
 FROM customers c
@@ -181,7 +181,7 @@ LEFT JOIN employees m
 
 	   -- \\\   The Using Clause  \\\
 SELECT 
-	o.order_id,
+    o.order_id,
     c.first_name,
     sh.name AS shipper
 FROM orders o
@@ -194,14 +194,14 @@ LEFT JOIN shippers sh
     /*
 	-- ON oi.order_id = oin.order_id
 	-- AND oi.product_id = oin.product_id;
-    --->
-    USING (order_id,product_id);
+        --->
+        USING (order_id,product_id);
     */
     
     
 	   -- \\\   natural joins (join two tables)  \\\
 SELECT 
-	o.order_id,
+    o.order_id,
     c.first_name
 FROM orders o
 NATURAL JOIN customers c;
@@ -214,35 +214,37 @@ SELECT *
 FROM customers c
 CROSS JOIN products p;  
 	-- :explicit syntax (more clear)
--- FROM customers c, products p  --: implicit syntax
+-- FROM customers c, products p  
+        --: implicit syntax
 	-- : combine all records in two tables
-    -- : recommend using when the table has variables such as size/color...
+        -- : recommend using when the table has variables such as size/color...
 
 
 	   -- \\\   Unions (combine rows in multiple tables)   \\\
 SELECT
-	order_id,
+    order_id,
     order_date,
     "active" AS status
 FROM orders
 WHERE order_date >= "2019-01-01"
 UNION   
 SELECT
-	order_id,
+    order_id,
     order_date,
     "archived" AS status
 FROM orders
 WHERE order_date < "2019-01-01";
 	-- : two combined tables should have same number columns.
-    -- : if different, the col in first table will determine the col of result.
+        -- : if different, the col in first table will determine the col of result.
 
 
 	   -- \\\   columns attributes   \\\
 /*
 column name
-datatype: int,
-		  VARCHAR(max#) - variablecharacter : string,texture.
-          CHAR(max#) - empty space will be filled by blank for #; waste space. 
+datatype: 
+	int,
+	VARCHAR(max#) - variablecharacter : string,texture.
+        CHAR(max#) - empty space will be filled by blank for #; waste space. 
 PK - primary key (marked by yellow key)
 NN - not NULL; accept NULL value or not
 AI - make column as AUTO_INCREMENT (normally used for PK)
@@ -252,7 +254,7 @@ AI - make column as AUTO_INCREMENT (normally used for PK)
 	   -- \\\   inserting a single row   \\\
 INSERT INTO customers
 VALUES (
-	DEFAULT,
+    DEFAULT,
     "John",
     "Smith",
     "1990-01-01",
@@ -262,10 +264,10 @@ VALUES (
     "CA",
     DEFAULT
     );     
-	-- : (default or number you need,,date/phone or NULL)
+    -- : (default or number you need,,date/phone or NULL)
  
  INSERT INTO customers (
-	first_name,
+    first_name,
     last_name,
     address,
     city,
@@ -326,7 +328,7 @@ WHERE order_date < "2019-01-01";
 USE sql_invoicing;
 CREATE TABLE invoices_paid AS 
 SELECT 
-	i.invoice_id,
+    i.invoice_id,
     i.number,
     c.name AS client,
     i.invoice_total,
@@ -350,7 +352,7 @@ WHERE invoice_id = 1 ;
 	   -- \\\   updating multiple rows   \\\
 UPDATE invoices
 SET 
-	payment_total = invoice_total * 0.5, 
+    payment_total = invoice_total * 0.5, 
     payment_date = due_date
 WHERE client_id = 3 ;
 	/* BUT workbench has safe mode, only allow to change a single record.
@@ -361,7 +363,7 @@ WHERE client_id = 3 ;
 	   -- \\\   using subqueries in updates   \\\
 UPDATE invoices
 SET 
-	payment_total = invoice_total * 0.5, 
+    payment_total = invoice_total * 0.5, 
     payment_date = due_date
 WHERE client_id IN 
 			(SELECT client_id
